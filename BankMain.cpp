@@ -1,6 +1,9 @@
 /*	Author: Naveed Sheikh
-	Revision Date: 12/28/2020
 	File Name: BankMain.cpp
+	Revision History: 
+	12/27/2020 - Initial Commit
+	12/28/2020 - Added function declarations and definitions
+	12/29/2020 - saveData() function completed
 ---------------------------------------------------------- - */
 #include <iostream>
 #include <iomanip>
@@ -29,6 +32,7 @@ void saveData(const char* file);
  Main function
  ***********************************/
 int main(int argc, char** argv) {
+	//This try catch block tries to load data from file into the STL container and throws an error if it fails
 	try {
 		loadData(argv[1]);
 	}
@@ -43,6 +47,7 @@ int main(int argc, char** argv) {
 		cout << "Enter your PIN number: ";
 		cin >> PIN;
 		if (checkPIN(PIN) == 0) {
+			//Print error if PIN number does not match an existing PIN
 			cout << "Incorrect PIN." << endl;
 		}
 		else {
@@ -85,6 +90,7 @@ int main(int argc, char** argv) {
 					cout << "Account Balance: $" << accounts[index].getChecking() << endl;
 					cout << "Select Amount: $";
 					cin >> amount;
+					//Validation to make sure user can only withdraw an amount that already exists in the account
 					while (amount <= 0 || amount > accounts[index].getChecking()) {
 						cout << "Invalid amount, please enter an amount between $1 and $" << accounts[index].getChecking() << ": ";
 						cin >> amount;
@@ -97,6 +103,7 @@ int main(int argc, char** argv) {
 					cout << "Account Balance: $" << accounts[index].getSavings() << endl;
 					cout << "Select Amount: $";
 					cin >> amount;
+					//Validation to make sure user can only withdraw an amount that already exists in the account
 					while (amount <= 0 || amount > accounts[index].getSavings()) {
 						cout << "Invalid amount, please enter an amount between $1 and $" << accounts[index].getSavings() << ": ";
 						cin >> amount;
@@ -112,6 +119,7 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
+	saveData(argv[1]);
 	cout << "Signing out!..." << endl;
 }
 
@@ -167,6 +175,7 @@ void loadData(const char* filename) {
 
 	std::ifstream file(filename);
 	if (!file) {
+		//Throw an error if file can't open
 		throw string("\n***Failed to open file ") + string(filename) + string(" ***\n");
 	}
 	std::string strAccount;
@@ -183,6 +192,7 @@ void loadData(const char* filename) {
 				--i;
 		}
 	}
+	//Creating an Account object using one argument constructor for each account in the text file and adding it to the accounts container
 	for (auto i = 0u; i < number_of_lines; i++) {
 		std::getline(file, strAccount);
 		if (file) {
@@ -239,5 +249,17 @@ void viewAccount(int index) {
  Saves updated data to file
  ***********************************/
 void saveData(const char* file) {
-
+	string text;
+	for (int i = 0; i < accounts.size(); i++) {
+		text += accounts[i].getName();
+		text += ", ";
+		text += to_string(accounts[i].getPIN());
+		text += ", ";
+		text += to_string(accounts[i].getChecking());
+		text += ", ";
+		text += to_string(accounts[i].getSavings());
+		text += "\n";
+	}
+	std::ofstream ofs(file, std::ofstream::trunc);
+	ofs << text;
 }
