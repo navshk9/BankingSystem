@@ -1,0 +1,4 @@
+Andrew Yang, 1234, 1000, 500
+Kevin Singh, 1111, 456.99, 123.23
+Mike Wozauski, 6666, 6969.69, 0.99
+Dank Meme, 6969, 1.99, 8.12
