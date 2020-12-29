@@ -1,6 +1,7 @@
 /*	Author: Naveed Sheikh
-	Revision Date: 12/28/2020
 	File Name: Account.h
+	Revision History:
+	12/27/2020 - Initial Commit
 ---------------------------------------------------------- - */
 #ifndef SDDS_ACCOUNT_H__
 #define SDDS_ACCOUNT_H__
